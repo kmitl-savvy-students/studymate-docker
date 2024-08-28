@@ -34,6 +34,7 @@ services:
       - "5432:5432"
     volumes:
       - studymate-postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: studymate
       POSTGRES_USER: studymate
