@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS user_management;
 CREATE TABLE IF NOT EXISTS user_management."user" (
     "Id" VARCHAR(8) NOT NULL PRIMARY KEY,
     "Password" VARCHAR(64) NOT NULL,
-    "Gender" VARCHAR(6) NULL CHECK ("Gender" IN ('MALE', 'FEMALE', 'UNSPECIFIED')),
+    "Gender" VARCHAR(6) NULL CHECK ("Gender" IN ('MALE', 'FEMALE')),
     "NameNick" VARCHAR(256) NULL,
     "NameFirst" VARCHAR(256) NULL,
     "NameLast" VARCHAR(256) NULL
