@@ -8,6 +8,8 @@ services:
       - "5000:5000"
     volumes:
       - ../studymate-backend:/app
+      - studymate-nuget:/app/obj
+      - studymate-nuget:/app/bin
     networks:
       - studymate-network
 
@@ -94,3 +96,4 @@ volumes:
   studymate-node-modules:
   studymate-postgres:
   studymate-pgadmin:
+  studymate-nuget:
