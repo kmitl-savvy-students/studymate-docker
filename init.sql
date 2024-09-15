@@ -1,17 +1,17 @@
-CREATE SCHEMA IF NOT EXISTS user_management;
+CREATE SCHEMA IF NOT EXISTS public;
 
-CREATE TABLE IF NOT EXISTS user_management."user" (
+CREATE TABLE IF NOT EXISTS public."User" (
     "Id" VARCHAR(8) NOT NULL PRIMARY KEY,
     "Password" VARCHAR(64) NOT NULL,
-    "Gender" VARCHAR(6) NULL CHECK ("Gender" IN ('MALE', 'FEMALE')),
-    "NameNick" VARCHAR(256) NULL,
-    "NameFirst" VARCHAR(256) NULL,
-    "NameLast" VARCHAR(256) NULL
+    "Gender" VARCHAR(6) NOT NULL,
+    "NameNick" VARCHAR(256) NOT NULL,
+    "NameFirst" VARCHAR(256) NOT NULL,
+    "NameLast" VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_management."signin_token" (
+CREATE TABLE IF NOT EXISTS public."UserToken" (
     "Id" VARCHAR(64) NOT NULL PRIMARY KEY,
-    "UserId" VARCHAR(8) NOT NULL REFERENCES  user_management."user"("Id"),
-    "TimeCreated" TIMESTAMP NOT NULL,
-    "TimeExpired" TIMESTAMP NOT NULL
+    "UserId" VARCHAR(8) NOT NULL REFERENCES public."User"("Id"),
+    "Created" TIMESTAMP NOT NULL,
+    "Expired" TIMESTAMP NOT NULL
 );
