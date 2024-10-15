@@ -37,6 +37,7 @@ services:
     volumes:
       - studymate-postgres:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data_of_kmitl.sql:/docker-entrypoint-initdb.d/data_of_kmitl.sql.sql
     environment:
       POSTGRES_DB: studymate
       POSTGRES_USER: studymate
