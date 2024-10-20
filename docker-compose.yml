@@ -6,10 +6,16 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "5000:5000"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/keys/vertex-ai-access-key.json
     volumes:
+      - ./keys/vertex-ai-access-key.json:/app/keys/vertex-ai-access-key.json:ro
       - ../studymate-backend:/app
       - studymate-nuget:/app/obj
       - studymate-nuget:/app/bin
+      - ../studymate-backend/Tests:/app/Tests
+      - studymate-nuget:/app/Tests/obj
+      - studymate-nuget:/app/Tests/bin
     networks:
       - studymate-network
 
