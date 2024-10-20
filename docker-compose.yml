@@ -7,15 +7,15 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/keys/vertex-ai-access-key.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/studymate-backend/keys/vertex-ai-access-key.json
     volumes:
-      - ./keys/vertex-ai-access-key.json:/app/keys/vertex-ai-access-key.json:ro
-      - ../studymate-backend:/app
-      - studymate-nuget:/app/obj
-      - studymate-nuget:/app/bin
-      - ../studymate-backend/Tests:/app/Tests
-      - studymate-nuget:/app/Tests/obj
-      - studymate-nuget:/app/Tests/bin
+      - ./keys/vertex-ai-access-key.json:/app/studymate-backend/keys/vertex-ai-access-key.json:ro
+      - ../studymate-backend/studymate-backend:/app//studymate-backend
+      - studymate-nuget:/app/studymate-backend/obj
+      - studymate-nuget:/app/studymate-backend/bin
+      - ../studymate-backend/studymate-backend-tests:/app/studymate-backend-tests
+      - studymate-nuget:/app/studymate-backend-tests/obj
+      - studymate-nuget:/app/studymate-backend-tests/bin
     networks:
       - studymate-network
 
