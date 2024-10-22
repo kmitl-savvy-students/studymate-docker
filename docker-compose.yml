@@ -10,17 +10,25 @@ services:
       - .env
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+
       - DB_SERVER=${DB_SERVER}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+
       - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_ENDPOINT_USER_INFO=${OAUTH_ENDPOINT_USER_INFO} # https://www.googleapis.com/auth/userinfo
+      - OAUTH2_ENDPOINT=${OAUTH2_ENDPOINT} # https://accounts.google.com/o/oauth2/v2/auth
+      - OAUTH2_ENDPOINT_TOKEN=${OAUTH2_ENDPOINT_TOKEN} # https://oauth2.googleapis.com/token
+      - OAUTH2_ENDPOINT_USER_INFO=${OAUTH2_ENDPOINT_USER_INFO} # https://www.googleapis.com/oauth2/v2/userinfo
+
+      - FRONTEND_URL=${FRONTEND_URL} # http://localhost:4200
     depends_on:
       - database
     volumes:
       - ./keys/vertex-ai-access-key.json:/app/studymate-backend/keys/vertex-ai-access-key.json:ro
-      - ../studymate-backend/studymate-backend:/app//studymate-backend
+      - ../studymate-backend/studymate-backend:/app/studymate-backend
       - studymate-nuget:/app/studymate-backend/obj
       - studymate-nuget:/app/studymate-backend/bin
       - ../studymate-backend/studymate-backend-tests:/app/studymate-backend-tests
