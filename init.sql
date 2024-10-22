@@ -7,14 +7,15 @@ CREATE TABLE IF NOT EXISTS public."User" (
     "NameNick" VARCHAR(256) NOT NULL,
     "NameFirst" VARCHAR(256) NOT NULL,
     "NameLast" VARCHAR(256) NOT NULL,
-    "Profile" VARCHAR(256) NOT NULL,
+    "Profile" VARCHAR(256) NOT NULL
 );
+
 CREATE TABLE IF NOT EXISTS public."UserToken" (
     "Id" VARCHAR(64) NOT NULL PRIMARY KEY,
     "UserId" VARCHAR(8) NOT NULL,
     "Created" TIMESTAMP NOT NULL,
     "Expired" TIMESTAMP NOT NULL,
-    CONSTRAINT fk_user
+    CONSTRAINT fk_usertoken_user
         FOREIGN KEY ("UserId")
         REFERENCES public."User" ("Id")
 );
@@ -28,7 +29,7 @@ CREATE TABLE public."Curriculum" (
     "DegreeNameTh" VARCHAR(256),            
     "DegreeNameThShort" VARCHAR(128),        
     "DegreeNameEn" VARCHAR(256),             
-    "DegreeNameEnShort" VARCHAR(128),         
+    "DegreeNameEnShort" VARCHAR(128)         
 );
 
 CREATE TABLE public."Transcript" (
@@ -36,21 +37,22 @@ CREATE TABLE public."Transcript" (
     "UserId" VARCHAR(8) NOT NULL,           
     "CurriculumId" INT NOT NULL,            
     "Created" TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT fk_curriculum
+    CONSTRAINT fk_transcript_curriculum
         FOREIGN KEY ("CurriculumId")
         REFERENCES public."Curriculum" ("Id"),
-    CONSTRAINT fk_user
+    CONSTRAINT fk_transcript_user
         FOREIGN KEY ("UserId")
-        REFERENCES public."User" ("Id"),
+        REFERENCES public."User" ("Id")
 );
+
 CREATE TABLE public."TranscriptData" (
     "Id" SERIAL PRIMARY KEY,                 
     "TranscriptId" INT NOT NULL,            
     "SubjectId" VARCHAR(8) NOT NULL,        
     "Grade" VARCHAR(4) NOT NULL,                    
-    CONSTRAINT fk_transcript
+    CONSTRAINT fk_transcriptdata_transcript
         FOREIGN KEY ("TranscriptId")
-        REFERENCES public."Transcript" ("Id"),
+        REFERENCES public."Transcript" ("Id")
 );
 
 INSERT INTO public."Curriculum" ("Id", "Year", "Name", "NameEng", "Degree", "DegreeShort", "DegreeEng", "DegreeEngShort") VALUES
