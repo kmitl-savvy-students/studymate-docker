@@ -18,12 +18,11 @@ services:
 
       - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_REDIRECT_URI=${FRONTEND_URL} # http://localhost:4200
       - OAUTH_ENDPOINT_USER_INFO=${OAUTH_ENDPOINT_USER_INFO} # https://www.googleapis.com/auth/userinfo
       - OAUTH2_ENDPOINT=${OAUTH2_ENDPOINT} # https://accounts.google.com/o/oauth2/v2/auth
       - OAUTH2_ENDPOINT_TOKEN=${OAUTH2_ENDPOINT_TOKEN} # https://oauth2.googleapis.com/token
       - OAUTH2_ENDPOINT_USER_INFO=${OAUTH2_ENDPOINT_USER_INFO} # https://www.googleapis.com/oauth2/v2/userinfo
-
-      - FRONTEND_URL=${FRONTEND_URL} # http://localhost:4200
     depends_on:
       - database
     volumes:
