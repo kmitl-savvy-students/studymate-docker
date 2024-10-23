@@ -1,5 +1,27 @@
 CREATE SCHEMA IF NOT EXISTS public;
 
+SET session_replication_role = 'replica';
+
+DROP TABLE IF EXISTS public."TranscriptData";
+DROP TABLE IF EXISTS public."Transcript";
+DROP TABLE IF EXISTS public."UserToken";
+DROP TABLE IF EXISTS public."User";
+DROP TABLE IF EXISTS public."Curriculum";
+
+SET session_replication_role = 'origin';
+
+CREATE TABLE IF NOT EXISTS public."Curriculum" (
+    "Id" SERIAL PRIMARY KEY,
+    "UniqueId" VARCHAR(4) NOT NULL,
+    "Year" VARCHAR(4) NOT NULL,
+    "NameTh" VARCHAR(256) NOT NULL,
+    "NameEn" VARCHAR(256) NOT NULL,
+    "DegreeNameTh" VARCHAR(256) NOT NULL,
+    "DegreeNameThShort" VARCHAR(128) NOT NULL,
+    "DegreeNameEn" VARCHAR(256) NOT NULL,
+    "DegreeNameEnShort" VARCHAR(128) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS public."User" (
     "Id" VARCHAR(8) NOT NULL PRIMARY KEY,
     "Password" VARCHAR(64) NOT NULL,
@@ -7,7 +29,11 @@ CREATE TABLE IF NOT EXISTS public."User" (
     "NameNick" VARCHAR(256) NOT NULL,
     "NameFirst" VARCHAR(256) NOT NULL,
     "NameLast" VARCHAR(256) NOT NULL,
-    "Profile" VARCHAR(256) NOT NULL
+    "Profile" VARCHAR(256) NOT NULL,
+    "CurriculumId" INT,
+    CONSTRAINT fk_user_curriculum
+        FOREIGN KEY ("CurriculumId")
+        REFERENCES public."Curriculum" ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS public."UserToken" (
@@ -20,22 +46,10 @@ CREATE TABLE IF NOT EXISTS public."UserToken" (
         REFERENCES public."User" ("Id")
 );
 
-CREATE TABLE IF NOT EXISTS public."Curriculum" (
-    "Id" SERIAL PRIMARY KEY,              
-    "UniqueId" VARCHAR(4) NOT NULL,     
-    "Year" VARCHAR(4) NOT NULL,            
-    "NameTh" VARCHAR(256),                
-    "NameEn" VARCHAR(256),                 
-    "DegreeNameTh" VARCHAR(256),            
-    "DegreeNameThShort" VARCHAR(128),        
-    "DegreeNameEn" VARCHAR(256),             
-    "DegreeNameEnShort" VARCHAR(128)         
-);
-
 CREATE TABLE IF NOT EXISTS public."Transcript" (
-    "Id" SERIAL PRIMARY KEY,            
-    "UserId" VARCHAR(8) NOT NULL,           
-    "CurriculumId" INT NOT NULL,            
+    "Id" SERIAL PRIMARY KEY,
+    "UserId" VARCHAR(8) NOT NULL,
+    "CurriculumId" INT NOT NULL,
     "Created" TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT fk_transcript_curriculum
         FOREIGN KEY ("CurriculumId")
@@ -46,10 +60,13 @@ CREATE TABLE IF NOT EXISTS public."Transcript" (
 );
 
 CREATE TABLE IF NOT EXISTS public."TranscriptData" (
-    "Id" SERIAL PRIMARY KEY,                 
-    "TranscriptId" INT NOT NULL,            
-    "SubjectId" VARCHAR(8) NOT NULL,        
-    "Grade" VARCHAR(4) NOT NULL,                    
+    "Id" SERIAL PRIMARY KEY,
+    "TranscriptId" INT NOT NULL,
+    "SubjectId" VARCHAR(8) NOT NULL,
+    "Semester" INT NOT NULL,
+    "Year" INT NOT NULL,
+    "Grade" VARCHAR(4) NOT NULL,
+    "Credit" INT NOT NULL,
     CONSTRAINT fk_transcriptdata_transcript
         FOREIGN KEY ("TranscriptId")
         REFERENCES public."Transcript" ("Id")
