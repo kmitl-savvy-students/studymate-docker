@@ -6,7 +6,15 @@ DROP TABLE IF EXISTS public."transcript_data";
 DROP TABLE IF EXISTS public."transcript";
 DROP TABLE IF EXISTS public."user_token";
 DROP TABLE IF EXISTS public."user";
+
 DROP TABLE IF EXISTS public."curriculum";
+DROP TABLE IF EXISTS public."curriculum_group";
+DROP TABLE IF EXISTS public."curriculum_subgroup";
+DROP TABLE IF EXISTS public."curriculum_subject";
+DROP TABLE IF EXISTS public."gened_group";
+DROP TABLE IF EXISTS public."gened_subject";
+
+DROP TABLE IF EXISTS public."subject";
 
 SET session_replication_role = 'origin';
 
@@ -21,11 +29,76 @@ CREATE TABLE IF NOT EXISTS public."curriculum" (
     "degree_name_en" VARCHAR(256) NOT NULL,
     "degree_name_en_short" VARCHAR(128) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS public."curriculum_group" (
+    "category_id" smallint NOT NULL,
+    "group_id" smallint NOT NULL,
+    "unique_id" varchar(4) NOT NULL,
+    "year" varchar(4) NOT NULL,
+    "group_name" varchar(200) NOT NULL,
+    "credit1" smallint NOT NULL,
+    "credit2" smallint NOT NULL,
+    "subgroup_flag" varchar(1) NOT NULL,
+    "condition" varchar(2) NOT NULL,
+    "link" varchar(50) NOT NULL,
+    PRIMARY KEY ("category_id", "group_id", "unique_id", "year")
+);
+CREATE TABLE IF NOT EXISTS public."curriculum_subgroup" (
+    "category_id" smallint NOT NULL,
+    "group_id" smallint NOT NULL,
+    "subgroup_id" smallint NOT NULL,
+    "unique_id" varchar(4) NOT NULL,
+    "year" varchar(4) NOT NULL,
+    "subgroup_name" varchar(200) NOT NULL,
+    "credit1" smallint NOT NULL,
+    "credit2" smallint NOT NULL,
+    "condition" varchar(2) NOT NULL,
+    "link" varchar(50) NOT NULL,
+    PRIMARY KEY ("category_id", "group_id", "subgroup_id", "unique_id", "year")
+);
+CREATE TABLE IF NOT EXISTS public."curriculum_subject" (
+    "subject_id" varchar(8) NOT NULL,
+    "category_id" smallint NOT NULL,
+    "group_id" smallint NOT NULL,
+    "subgroup_id" smallint NOT NULL,
+    "unique_id" varchar(4) NOT NULL,
+    "year" varchar(4) NOT NULL,
+    "normal_flag" varchar(1) NOT NULL,
+    "coop_flag" varchar(1) NOT NULL,
+    PRIMARY KEY ("subject_id", "category_id", "group_id", "subgroup_id", "unique_id", "year")
+);
+CREATE TABLE IF NOT EXISTS public."gened_group" (
+    "id" varchar(2) PRIMARY KEY,
+    "group_name" varchar(150) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS public."gened_subject" (
+    "subject_id" varchar(8) NOT NULL,
+    "group_id" varchar(2) NOT NULL,
+    PRIMARY KEY ("subject_id", "group_id")
+);
+CREATE TABLE IF NOT EXISTS public."subject" (
+    "subject_id" varchar(8) PRIMARY KEY,
+    "subject_tname" varchar(128) NOT NULL,
+    "subject_ename" varchar(128) NOT NULL,
+    "credit" integer NOT NULL,
+    "lect_hr" integer NOT NULL,
+    "prac_hr" integer NOT NULL,
+    "prerequisite" varchar(8) NOT NULL,
+    "detail" text NOT NULL,
+    "self_hr" integer NOT NULL,
+    "prerequisite2" varchar(8) NOT NULL,
+    "lock_ed" smallint NOT NULL,
+    "precondition" smallint NOT NULL,
+    "status" varchar(1) NOT NULL,
+    "subject_type" varchar(1) NOT NULL,
+    "prerequisite3" varchar(8) NOT NULL,
+    "prerequisite4" varchar(8) NOT NULL,
+    "prerequisite5" varchar(8) NOT NULL,
+    "last_modified" timestamp NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS public."user" (
     "id" VARCHAR(8) NOT NULL PRIMARY KEY,
     "password" VARCHAR(64) NOT NULL,
-    "gender" VARCHAR(6) NOT NULL,
     "name_nick" VARCHAR(256) NOT NULL,
     "name_first" VARCHAR(256) NOT NULL,
     "name_last" VARCHAR(256) NOT NULL,
@@ -35,7 +108,6 @@ CREATE TABLE IF NOT EXISTS public."user" (
         FOREIGN KEY ("curriculum_id")
         REFERENCES public."curriculum" ("id")
 );
-
 CREATE TABLE IF NOT EXISTS public."user_token" (
     "id" VARCHAR(64) NOT NULL PRIMARY KEY,
     "user_id" VARCHAR(8) NOT NULL,
@@ -58,7 +130,6 @@ CREATE TABLE IF NOT EXISTS public."transcript" (
         FOREIGN KEY ("user_id")
         REFERENCES public."user" ("id")
 );
-
 CREATE TABLE IF NOT EXISTS public."transcript_data" (
     "id" SERIAL PRIMARY KEY,
     "transcript_id" INT NOT NULL,
@@ -71,13 +142,3 @@ CREATE TABLE IF NOT EXISTS public."transcript_data" (
         FOREIGN KEY ("transcript_id")
         REFERENCES public."transcript" ("id")
 );
-
-INSERT INTO public."curriculum" ("id", "unique_id", "year", "name_th", "name_en", "degree_name_th", "degree_name_th_short", "degree_name_en", "degree_name_en_short") VALUES
-('1', '0155', '2565', 'หลักสูตรวิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์ (หลักสูตรนานาชาติ)', 'Bachelor of Engineering Program in Computer Engineering (International Program)', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)'),
-('2', '0105', '2564', 'หลักสูตรวิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์', 'Bachelor of Engineering Program in Computer Engineering', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)'),
-('3', '0132', '2564', 'หลักสูตรวิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์ (ภาคปกติ)', 'Bachelor of Engineering Program in Computer Engineering ', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)'),
-('4', '1182', '2564', 'หลักสูตรวิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์', 'Bachelor of Engineering Program in Computer Engineering', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'B.Eng. (Computer Engineering)'),
-('5', '0132', '2560', 'หลักสูตรวิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์ (ภาคปกติ)', 'Bachelor of Engineering Program in Computer Engineering (Continuing Education)', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)'),
-('6', '0105', '2554', 'วิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์', 'Curriculum for Bachelor of Engineering Program in Computer', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)'),
-('7', '0105', '2552', 'หลักสูตรวิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์', 'Bachelor of Engineering Program in Computer Engineering', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)'),
-('8', '0105', '2546', 'วิศวกรรมศาสตร์บัณฑิต สาขาวิชาวิศวกรรมคอมพิวเตอร์', 'Curriculum for Bachelor of Engineering Program in Computer', 'วิศวกรรมศาสตร์บัณฑิต (วิศวกรรมคอมพิวเตอร์)', 'วศ.บ. (วิศวกรรมคอมพิวเตอร์)', 'Bachelor of Engineering (Computer Engineering)', 'B.Eng. (Computer Engineering)');
