@@ -103,20 +103,20 @@ CREATE TABLE IF NOT EXISTS public."user" (
     "name_first" VARCHAR(256) NOT NULL,
     "name_last" VARCHAR(256) NOT NULL,
     "profile" VARCHAR(256) NOT NULL,
-    "curriculum_id" INT,
+    "curriculum_id" INT
 );
 CREATE TABLE IF NOT EXISTS public."user_token" (
     "id" VARCHAR(64) NOT NULL PRIMARY KEY,
     "user_id" VARCHAR(8) NOT NULL,
     "created" TIMESTAMP NOT NULL,
-    "expired" TIMESTAMP NOT NULL,
+    "expired" TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public."transcript" (
     "id" SERIAL PRIMARY KEY,
     "user_id" VARCHAR(8) NOT NULL,
     "curriculum_id" INT NOT NULL,
-    "created" TIMESTAMP NOT NULL DEFAULT NOW(),
+    "created" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 CREATE TABLE IF NOT EXISTS public."transcript_data" (
     "id" SERIAL PRIMARY KEY,
@@ -125,5 +125,5 @@ CREATE TABLE IF NOT EXISTS public."transcript_data" (
     "semester" INT NOT NULL,
     "year" INT NOT NULL,
     "grade" VARCHAR(4) NOT NULL,
-    "credit" INT NOT NULL,
+    "credit" INT NOT NULL
 );
