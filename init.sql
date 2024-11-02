@@ -104,18 +104,12 @@ CREATE TABLE IF NOT EXISTS public."user" (
     "name_last" VARCHAR(256) NOT NULL,
     "profile" VARCHAR(256) NOT NULL,
     "curriculum_id" INT,
-    CONSTRAINT fk_user_curriculum
-        FOREIGN KEY ("curriculum_id")
-        REFERENCES public."curriculum" ("id")
 );
 CREATE TABLE IF NOT EXISTS public."user_token" (
     "id" VARCHAR(64) NOT NULL PRIMARY KEY,
     "user_id" VARCHAR(8) NOT NULL,
     "created" TIMESTAMP NOT NULL,
     "expired" TIMESTAMP NOT NULL,
-    CONSTRAINT fk_usertoken_user
-        FOREIGN KEY ("user_id")
-        REFERENCES public."user" ("id")
 );
 
 CREATE TABLE IF NOT EXISTS public."transcript" (
@@ -123,12 +117,6 @@ CREATE TABLE IF NOT EXISTS public."transcript" (
     "user_id" VARCHAR(8) NOT NULL,
     "curriculum_id" INT NOT NULL,
     "created" TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT fk_transcript_curriculum
-        FOREIGN KEY ("curriculum_id")
-        REFERENCES public."curriculum" ("id"),
-    CONSTRAINT fk_transcript_user
-        FOREIGN KEY ("user_id")
-        REFERENCES public."user" ("id")
 );
 CREATE TABLE IF NOT EXISTS public."transcript_data" (
     "id" SERIAL PRIMARY KEY,
@@ -138,7 +126,4 @@ CREATE TABLE IF NOT EXISTS public."transcript_data" (
     "year" INT NOT NULL,
     "grade" VARCHAR(4) NOT NULL,
     "credit" INT NOT NULL,
-    CONSTRAINT fk_transcriptdata_transcript
-        FOREIGN KEY ("transcript_id")
-        REFERENCES public."transcript" ("id")
 );
