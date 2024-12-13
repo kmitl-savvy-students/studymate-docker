@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS public."curriculum" (
     "degree_name_th" VARCHAR(256) NOT NULL,
     "degree_name_th_short" VARCHAR(128) NOT NULL,
     "degree_name_en" VARCHAR(256) NOT NULL,
-    "degree_name_en_short" VARCHAR(128) NOT NULL
+    "degree_name_en_short" VARCHAR(128) NOT NULL,
+    "pid" VARCHAR(4)
 );
 CREATE TABLE IF NOT EXISTS public."curriculum_group" (
     "category_id" smallint NOT NULL,
