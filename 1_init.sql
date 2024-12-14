@@ -128,3 +128,28 @@ CREATE TABLE IF NOT EXISTS public."transcript_data" (
     "grade" VARCHAR(4) NOT NULL,
     "credit" INT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS public."teachtable" (
+    "id" SERIAL PRIMARY KEY,
+    "academic_year" INT NOT NULL,
+    "academic_term" INT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS public."teachtable_subject" (
+    "id" SERIAL PRIMARY KEY,
+    "teachtable_id" INT NOT NULL,
+    "subject_id" VARCHAR(8) NOT NULL,
+    "interested" INT NOT NULL,
+    "rating" FLOAT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS public."teachtable_subject_review" (
+    "id" SERIAL PRIMARY KEY,
+    "teachtable_subject_id" INT NOT NULL,
+    "user_id" VARCHAR(8) NOT NULL,
+    "review" TEXT NOT NULL,
+    "rating" FLOAT NOT NULL,
+    "like" INT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS public."teachtable_subject_interested" (
+    "id" SERIAL PRIMARY KEY,
+    "teachtable_subject_id" INT NOT NULL,
+    "user_id" VARCHAR(8) NOT NULL
+);
