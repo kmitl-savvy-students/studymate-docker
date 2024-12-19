@@ -138,7 +138,8 @@ CREATE TABLE IF NOT EXISTS public."teachtable_subject" (
     "teachtable_id" INT NOT NULL,
     "subject_id" VARCHAR(8) NOT NULL,
     "interested" INT NOT NULL,
-    "rating" FLOAT NOT NULL
+    "rating" FLOAT NOT NULL,
+    "count_of_review" INT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS public."teachtable_subject_review" (
     "id" SERIAL PRIMARY KEY,
