@@ -147,7 +147,8 @@ CREATE TABLE IF NOT EXISTS public."teachtable_subject_review" (
     "user_id" VARCHAR(8) NOT NULL,
     "review" TEXT NOT NULL,
     "rating" FLOAT NOT NULL,
-    "like" INT NOT NULL
+    "like" INT NOT NULL,
+    "created" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE TABLE IF NOT EXISTS public."teachtable_subject_interested" (
     "id" SERIAL PRIMARY KEY,
