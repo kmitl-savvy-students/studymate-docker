@@ -155,3 +155,20 @@ CREATE TABLE IF NOT EXISTS public."teachtable_subject_interested" (
     "teachtable_subject_id" INT NOT NULL,
     "user_id" VARCHAR(8) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS public."cu_curriculum_index" (
+  "curri_id" VARCHAR(10) NOT NULL PRIMARY KEY,
+  "curri_name" VARCHAR(150) NOT NULL,
+  "curri_ename" VARCHAR(200) NOT NULL,
+  "faculty_id" VARCHAR(2) NOT NULL,
+  "dept_id" VARCHAR(2) NOT NULL,
+  "level" VARCHAR(1) NOT NULL,
+  "status" VARCHAR(20) NOT NULL,
+  "curr_type" smallint NOT NULL
+);
+CREATE TABLE IF NOT EXISTS public."cu_curri_category" (
+  "c_cat_id" smallint NOT NULL,
+  "curri_id" VARCHAR(10) NOT NULL,
+  "year" VARCHAR(10) NOT NULL,
+  "credit1" smallint NOT NULL,
+  "credit2" smallint NOT NULL
+);
