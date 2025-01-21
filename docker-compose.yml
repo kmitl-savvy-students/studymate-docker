@@ -6,12 +6,9 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "5000:5000"
-    env_file:
-      - .env
     depends_on:
       - database
     volumes:
-      - ./keys/vertex-ai-access-key.json:/app/studymate-backend/keys/vertex-ai-access-key.json:ro
       - ../studymate-backend/studymate-backend:/app/studymate-backend
       - studymate-nuget:/app/studymate-backend/obj
       - studymate-nuget:/app/studymate-backend/bin
@@ -20,7 +17,6 @@ services:
       - studymate-nuget:/app/studymate-backend-tests/bin
     networks:
       - studymate-network
-     
 
   frontend:
     container_name: studymate-node-angular
@@ -38,67 +34,30 @@ services:
       - studymate-network
 
   database:
-    container_name: studymate-postgres
-    image: postgres:16-alpine
-    restart: always
-    ports:
-      - "5432:5432"
-    volumes:
-      - studymate-postgres:/var/lib/postgresql/data
-      - ./1_init.sql:/docker-entrypoint-initdb.d/1_init.sql
-      - ./data_of_kmitl.sql:/docker-entrypoint-initdb.d/data_of_kmitl.sql
-      - ./2_data.sql:/docker-entrypoint-initdb.d/2_data.sql
+    container_name: studymate-mysql
+    image: mysql
     environment:
-      POSTGRES_DB: studymate
-      POSTGRES_USER: studymate
-      POSTGRES_PASSWORD: studymate
-      PGDATA: /var/lib/postgresql/data
-    networks:
-      studymate-network:
-        aliases:
-          - database
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: studymate
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - studymate-mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
-  database-administration:
-    container_name: studymate-postgres-admin
-    image: dpage/pgadmin4:8
-    restart: always
-    ports:
-      - "5050:80"
-    volumes:
-      - studymate-pgadmin:/var/lib/pgadmin
+  phpmyadmin:
+    container_name: studymate-phpmyadmin
+    image: phpmyadmin/phpmyadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: studymate@studymate.com
-      PGADMIN_DEFAULT_PASSWORD: studymate
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
-      PGADMIN_LISTEN_PORT: 80
+      PMA_HOST: database
+      PMA_USER: admin
+      PMA_PASSWORD: admin
+      UPLOAD_LIMIT: 300M
+    ports:
+      - "8081:80"
     depends_on:
       - database
-    networks:
-      - studymate-network
-    user: root
-    entrypoint: /bin/sh -c "chmod 600 /pgpass; /entrypoint.sh;"
-    configs:
-      - source: pgpass
-        target: /pgpass
-      - source: servers
-        target: /pgadmin4/servers.json
-
-configs:
-  pgpass:
-    content: database:5432:*:studymate:studymate
-  servers:
-    content: |
-      {"Servers": {"1": {
-        "Group": "Servers",
-        "Name": "PostgreSQL StudyMate Development",
-        "Host": "database",
-        "Port": 5432,
-        "MaintenanceDB": "studymate",
-        "Username": "studymate",
-        "PassFile": "/pgpass",
-        "SSLMode": "prefer"
-      }}}
 
 networks:
   studymate-network:
@@ -107,6 +66,5 @@ networks:
 volumes:
   studymate-asp-dot-net-build:
   studymate-node-modules:
-  studymate-postgres:
-  studymate-pgadmin:
+  studymate-mysql-data:
   studymate-nuget:
