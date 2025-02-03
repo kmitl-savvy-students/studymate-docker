@@ -172,3 +172,8 @@ CREATE TABLE IF NOT EXISTS public."cu_curri_category" (
   "credit1" smallint NOT NULL,
   "credit2" smallint NOT NULL
 );
+CREATE TABLE IF NOT EXISTS public."teachtable_subject_review_like" (
+    "id" SERIAL PRIMARY KEY,
+    "teachtable_subject_review_id" INT NOT NULL,
+    "user_id" VARCHAR(8) NOT NULL
+);
