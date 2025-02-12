@@ -5,7 +5,7 @@ services:
       context: ../studymate-backend
       dockerfile: Dockerfile.dev
     ports:
-      - "5000:8080"
+      - "5002:8080"
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -42,10 +42,10 @@ services:
     container_name: studymate-mysql
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: studymate
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_SERVER: ${MYSQL_SERVER}
+      MYSQL_USER: ${MYSQL_USER}
     networks:
       - studymate-network
     volumes:
@@ -55,11 +55,11 @@ services:
 
   phpmyadmin:
     container_name: studymate-phpmyadmin
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:latest
     environment:
-      PMA_HOST: database
-      PMA_USER: admin
-      PMA_PASSWORD: admin
+      PMA_HOST: ${PMA_HOST}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
       UPLOAD_LIMIT: 300M
     networks:
       - studymate-network
