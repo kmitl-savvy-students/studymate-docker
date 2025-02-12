@@ -40,9 +40,10 @@ services:
 
   database:
     container_name: studymate-mysql
-    image: mysql
+    image: mysql:8.0
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_SERVER: ${MYSQL_SERVER}
       MYSQL_USER: ${MYSQL_USER}
