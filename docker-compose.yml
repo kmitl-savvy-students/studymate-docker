@@ -61,6 +61,8 @@ services:
       PMA_USER: admin
       PMA_PASSWORD: admin
       UPLOAD_LIMIT: 300M
+    networks:
+      - studymate-network
     ports:
       - "8081:80"
     depends_on:
