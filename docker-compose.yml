@@ -11,6 +11,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_SERVER: ${MYSQL_SERVER}
       MYSQL_USER: ${MYSQL_USER}
+      SMTP_EMAIL: ${SMTP_EMAIL}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
     depends_on:
       - database
     volumes:
